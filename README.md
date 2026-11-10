@@ -2,6 +2,8 @@
 
 The Arabic and English Elite Pro website built with Astro and TypeScript. This is the version with the original eight-second hero video, six service sections, portfolio video dialogs, and the silent logo opening.
 
+Live site: https://elitpro.vercel.app/. Both language routes include localized Open Graph and large-image social sharing metadata, with the branded 1200×630 JPEG at `public/media/elite-pro-share.jpg`. The canonical production origin is configured in `astro.config.mjs`; update it if the production domain changes.
+
 ## Run locally
 
 Use Node.js 26 (`nvm use` if nvm is installed) and npm. Astro requires Node.js 22.23.4 or newer.
@@ -48,4 +50,4 @@ The static site is generated in `dist/`. Serve the contents of that directory fr
 
 The project form prepares an email to `info@eliteproksa.com` in the visitor's email application. The visitor reviews and sends it there; the site has no email delivery backend and requires no API keys.
 
-Supplied media and generated service illustrations retain their documented provenance in `docs/`. The project does not grant a new licence to those assets. The existing `noindex,nofollow` metadata is retained. No production deployment is configured by this repository import.
+Supplied media, generated service illustrations, and the generated sharing card retain their documented provenance in `docs/`. The project does not grant a new licence to those assets. The existing `noindex,nofollow` metadata is retained.

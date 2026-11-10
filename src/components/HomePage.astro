@@ -20,6 +20,11 @@ const services = serviceAssets.map(s => ({...s, ...copy.serviceCopy[s.id]}));
 const processSteps = stepAssets.map((s,i) => ({...s, ...copy.processSteps[i]}));
 const localizedFilms = Object.fromEntries(Object.entries(films).map(([id,film]) => ({id,film})).map(({id,film}) => [id,{...film,...copy.film[id as keyof typeof films]}]));
 const alternateHref = locale === 'ar' ? '/en/' : '/';
+const canonicalUrl = new URL(locale === 'ar' ? '/' : '/en/', Astro.site);
+const shareImageUrl = new URL('/media/elite-pro-share.jpg', Astro.site);
+const shareImageAlt = locale === 'ar'
+  ? 'إيليت برو — أفكار تتحوّل إلى محتوى وتجارب، مع كاميرا سينمائية وشعار الشركة.'
+  : 'Elite Pro — a cinema camera, the company logo, and the Arabic tagline: Ideas become content and experiences.';
 ---
 <!doctype html>
 <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
@@ -29,7 +34,28 @@ const alternateHref = locale === 'ar' ? '/en/' : '/';
     <meta name="theme-color" content="#0A2226" />
     <meta name="robots" content="noindex,nofollow" />
     <title>{copy.page.title}</title>
-    <meta name="description" content={copy.page.description} /><link rel="alternate" hreflang="ar" href="/" /><link rel="alternate" hreflang="en" href="/en/" />
+    <meta name="description" content={copy.page.description} />
+    <link rel="canonical" href={canonicalUrl.href} />
+    <link rel="alternate" hreflang="ar" href={new URL('/', Astro.site).href} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site).href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Elite Pro | إيليت برو" />
+    <meta property="og:locale" content={locale === 'ar' ? 'ar_SA' : 'en_US'} />
+    <meta property="og:locale:alternate" content={locale === 'ar' ? 'en_US' : 'ar_SA'} />
+    <meta property="og:title" content={copy.page.title} />
+    <meta property="og:description" content={copy.page.description} />
+    <meta property="og:url" content={canonicalUrl.href} />
+    <meta property="og:image" content={shareImageUrl.href} />
+    <meta property="og:image:secure_url" content={shareImageUrl.href} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={shareImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={copy.page.title} />
+    <meta name="twitter:description" content={copy.page.description} />
+    <meta name="twitter:image" content={shareImageUrl.href} />
+    <meta name="twitter:image:alt" content={shareImageAlt} />
     <link rel="icon" type="image/png" href="/media/elite-symbol.png" />
   </head>
   <body>

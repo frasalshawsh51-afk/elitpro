@@ -1,0 +1,14 @@
+{
+  "asset": "public/media/elite-pro-share.jpg",
+  "purpose": "Open Graph and large-image social sharing card for https://elitpro.vercel.app/",
+  "width": 1200,
+  "height": 630,
+  "format": "JPEG",
+  "tool": "Built-in image_gen imagegen tool",
+  "inputs": [
+    "public/media/hero-poster-1280.webp",
+    "public/media/elite-logo.png"
+  ],
+  "note": "AI-generated sharing-card composition using the existing camera still and logo as references. Exported to 1200×630 JPEG with Sharp. The underlying source footage and the site's visible hero were not replaced.",
+  "prompt": "Create a finished premium website Open Graph sharing card for the Saudi creative production agency Elite Pro, using these two local image inputs. Reference 1 is the authentic cinematic camera still, the main photographic content. Reference 2 is the authentic WHITE logo on transparent background; preserve the supplied logo's actual geometry and lettering exactly, place it on a dark background so it is visible, never redesign or invent the logo. Landscape 1200 x 630 pixels, aspect 1.90476:1, full bleed, ready for WhatsApp and social sharing. Art direction matches a sophisticated cinema/production agency: very dark petrol #0A2226, subtle pale mint #ADD1C9 accents, warm real camera highlights. Large closeup authentic camera on LEFT half, blended beautifully into dark petrol on RIGHT half. ORIGINAL white logo small and crisp near top RIGHT. Beautiful very legible contemporary Arabic sans serif typography on RIGHT, RTL, with exact text split into two lines: first line «أفكار تتحوّل» in white, second line «إلى محتوى وتجارب.» in pale mint. Below, small understated exact text «إيليت برو · الرياض». Bottom left small subtle English text «A 360° CREATIVE AGENCY». Very restrained thin photographic frame corners optional. Keep everything inside generous 64-pixel safe margins. The card should feel like a beautiful deliberate film studio identity, with clear hierarchy at phone-thumbnail size. No webpage chrome, no UI, no mockup, no buttons, no extra logos, no watermark, no invented website URL, no stock people. It is a designed social preview image, not a screenshot. Arabic text MUST be correct and readable. Keep the original camera genuine and the original logo intact."
+}
