@@ -1,0 +1,13 @@
+/* Depth is limited to hero and NOOR; internal QA may disable it with ?depth=off. */
+.hero-media-shell,.work-media-shell{position:relative;isolation:isolate}
+.depth-prototype .hero-media-shell::before,.depth-prototype .work-media-shell::before{content:"";position:absolute;inset:8px 8px -8px -8px;z-index:-1;border:1px solid #4a78705c;border-radius:4px;background:#102e31;pointer-events:none;opacity:0}
+.depth-prototype[data-depth="on"] .hero-media-shell::before,.depth-prototype[data-depth="on"] .work-media-shell::before{opacity:1}
+.depth-prototype[data-depth="on"] .hero-media,.depth-prototype[data-depth="on"] .work-featured .work-image{box-shadow:0 14px 35px #00111428,0 0 0 1px #8cb6ac54}
+.depth-prototype .work-featured .work-image img,.depth-prototype .work-featured .work-image:hover img{transform:none}
+.depth-prototype .hero-media picture,.depth-prototype .hero-video,.depth-prototype .work-featured .work-image picture{transition:transform 420ms cubic-bezier(.2,.65,.3,1)}
+.depth-prototype[data-depth="on"][data-depth-motion="on"] .hero-media picture,.depth-prototype[data-depth="on"][data-depth-motion="on"] .hero-video{transform:translate3d(var(--depth-x,0px),var(--depth-y,0px),0) scale(1.012)}
+.depth-prototype[data-depth="on"][data-depth-motion="on"] .work-featured .work-image picture{transform:perspective(1400px) rotateX(var(--depth-rx,0deg)) rotateY(var(--depth-ry,0deg)) translate3d(var(--depth-x,0px),var(--depth-y,0px),0) scale(1.014)}
+.depth-prototype [data-depth-state="active"] picture,.depth-prototype [data-depth-state="active"] .hero-video{transition-duration:180ms}
+.depth-prototype[data-depth="off"] .hero-media picture,.depth-prototype[data-depth="off"] .hero-video,.depth-prototype[data-depth="off"] .work-featured .work-image picture{transform:none;transition:none}
+@media(max-width:767px),(hover:none),(pointer:coarse){.depth-prototype .hero-media picture,.depth-prototype .hero-video,.depth-prototype .work-featured .work-image picture{transform:none!important;transition:none!important}.depth-prototype .hero-media-shell::before,.depth-prototype .work-media-shell::before{inset:4px 4px -4px -4px}}
+@media(prefers-reduced-motion:reduce){.depth-prototype .hero-media picture,.depth-prototype .hero-video,.depth-prototype .work-featured .work-image picture{transform:none!important;transition:none!important}}

@@ -1,0 +1,223 @@
+---
+import type { Locale } from '../data/site-copy';
+import { siteCopy } from '../data/site-copy';
+import '../styles/projected-signal.css';
+
+interface Props { locale?: Locale }
+const { locale = 'ar' } = Astro.props;
+const copy = siteCopy[locale].intro;
+---
+
+<div class="projected-signal" data-opening-signal data-projected-signal role="region" aria-label={copy.ariaLabel} hidden>
+  <div class="projected-sky" aria-hidden="true">
+    <svg class="projected-optics" data-projected-optics xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1000" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="projected-light" gradientUnits="userSpaceOnUse" data-projected-gradient>
+          <stop offset="0" stop-color="#e1eee8" stop-opacity=".43" />
+          <stop offset=".44" stop-color="#bdd6d1" stop-opacity=".16" />
+          <stop offset="1" stop-color="#bad2cc" stop-opacity=".085" />
+        </linearGradient>
+        <linearGradient id="projected-barrel" x1="0" y1="0" x2="0" y2="1">
+          <stop stop-color="#325051" /><stop offset=".3" stop-color="#152d31" /><stop offset="1" stop-color="#061317" />
+        </linearGradient>
+        <radialGradient id="projected-lens"><stop stop-color="#e8f2ec" /><stop offset=".65" stop-color="#c3d7cf" /><stop offset="1" stop-color="#65857f" /></radialGradient>
+        <filter id="projected-soft" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="5" /></filter>
+        <filter id="projected-cloud-soft" x="-35%" y="-45%" width="170%" height="190%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="18" /></filter>
+        <g id="projected-field" data-projected-field><path data-projected-cone /></g>
+        <mask id="projected-illumination" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type:luminance" data-projected-mask>
+          <use href="#projected-field" fill="white" filter="url(#projected-soft)" />
+        </mask>
+      </defs>
+      <path class="projected-ground" data-projected-ground />
+      <g class="projected-cloud-body" data-projected-cloud-body filter="url(#projected-cloud-soft)"></g>
+      <g data-projected-emission>
+        <use class="projected-beam" href="#projected-field" fill="url(#projected-light)" filter="url(#projected-soft)" />
+        <g mask="url(#projected-illumination)">
+          <g class="projected-cloud-face" data-projected-cloud-face filter="url(#projected-cloud-soft)"></g>
+          <image class="projected-mark" data-projected-mark href="/media/elite-logo.png" width="286" height="315.65" preserveAspectRatio="xMidYMid meet" />
+        </g>
+      </g>
+      <g class="projected-stand" data-projected-stand><path d="M-29 9 -31 43 M-44 46 -15 46 M-34 43 -42 46 M-29 43 -20 46" /></g>
+      <g data-projected-lamp>
+        <path class="projected-lamp-yoke" d="M-43 15 -43 28 Q-25 34 -17 16" />
+        <rect x="-59" y="-19" width="56" height="38" rx="7" fill="url(#projected-barrel)" stroke="#496361" stroke-width="1" />
+        <path d="M-53-16H-13 M-53 14H-14" stroke="#78918a" stroke-opacity=".22" />
+        <ellipse cx="-2" cy="0" rx="8" ry="20" fill="#10272b" stroke="#526e68" stroke-width="2" />
+        <ellipse data-projected-lens cx="0" cy="0" rx="5" ry="15.5" fill="url(#projected-lens)" />
+      </g>
+    </svg>
+    <span class="projected-tagline latin" lang="en" dir="ltr">{copy.tagline}</span>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const opening = document.querySelector('[data-projected-signal]');
+    if (!opening) return;
+    const params = new URLSearchParams(location.search);
+    const mode = params.get('intro');
+    const still = mode === 'still';
+    const forced = still || mode === 'replay';
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const key = 'elite-pro:opening:v3';
+    opening.dataset.state = 'inactive';
+    if (mode === 'off' || motion.matches || (!forced && location.hash && location.hash !== '#top')) return;
+    try { if (!forced && sessionStorage.getItem(key)) return; }
+    catch { if (!forced) return; }
+
+    const svg = opening.querySelector('[data-projected-optics]');
+    const field = opening.querySelector('[data-projected-field]');
+    const cone = opening.querySelector('[data-projected-cone]');
+    const gradient = opening.querySelector('[data-projected-gradient]');
+    const mask = opening.querySelector('[data-projected-mask]');
+    const mark = opening.querySelector('[data-projected-mark]');
+    const body = opening.querySelector('[data-projected-cloud-body]');
+    const face = opening.querySelector('[data-projected-cloud-face]');
+    const lamp = opening.querySelector('[data-projected-lamp]');
+    const stand = opening.querySelector('[data-projected-stand]');
+    const lens = opening.querySelector('[data-projected-lens]');
+    const emission = opening.querySelector('[data-projected-emission]');
+    const ground = opening.querySelector('[data-projected-ground]');
+    let finished = false;
+    let started = false;
+    let frame = 0;
+    let deadline = 0;
+    let startTime = 0;
+    let elapsed = 0;
+    let geometry;
+    const pendingEvents = ['pointerdown', 'keydown', 'wheel', 'touchstart', 'focusin'];
+    const removePending = () => pendingEvents.forEach(name => document.removeEventListener(name, onPending, true));
+    const dismiss = reason => {
+      if (finished) return;
+      finished = true;
+      cancelAnimationFrame(frame);
+      clearTimeout(deadline);
+      opening.hidden = true;
+      opening.dataset.state = reason;
+      removePending();
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('focusin', onFocus);
+      document.removeEventListener('visibilitychange', onVisibility);
+      document.removeEventListener('wheel', onActiveIntent, true);
+      document.removeEventListener('touchstart', onActiveIntent, true);
+      document.removeEventListener('pointerdown', onActiveIntent, true);
+      window.removeEventListener('hashchange', onNavigation);
+      window.removeEventListener('resize', onResize);
+      motion.removeEventListener('change', onMotion);
+      opening.removeEventListener('animationend', onSafety);
+      document.dispatchEvent(new Event('elite:opening-end'));
+      if (opening.contains(document.activeElement)) document.querySelector('.brand')?.focus({ preventScroll: true });
+    };
+    const onPending = () => { if (!started) dismiss('interaction-before-ready'); };
+    const onKey = event => { if (event.key === 'Escape') dismiss('skipped'); };
+    const onFocus = event => { if (!opening.contains(event.target)) dismiss('keyboard'); };
+    const onVisibility = () => { if (document.hidden) dismiss('hidden'); };
+    const onActiveIntent = () => dismiss('interaction');
+    const onNavigation = () => dismiss('navigation');
+    const onMotion = () => { if (motion.matches) dismiss('reduced-motion'); };
+    const onSafety = event => { if (event.target === opening && event.animationName === 'projected-safety') dismiss('completed'); };
+    const clamp = value => Math.max(0, Math.min(1, value));
+    const smooth = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
+    const set = (element, attributes) => Object.entries(attributes).forEach(([name, value]) => element.setAttribute(name, String(value)));
+    const ellipse = (cx, cy, rx, ry, opacity) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" opacity="${opacity}"/>`;
+
+    function measure() {
+      const w = innerWidth;
+      const h = innerHeight;
+      const mobile = w <= 600;
+      const sx = mobile ? Math.max(48, w * .12) : w * .18;
+      const sy = h * (mobile ? .73 : .76);
+      const tx = w * (mobile ? .60 : .64);
+      const ty = h * (mobile ? .32 : .34);
+      const width = mobile ? Math.min(188, w * .46) : Math.min(286, w * .22);
+      const height = width * 362 / 328;
+      const rx = width * .78;
+      const ry = height * .70;
+      const qx = (sx - tx) / rx;
+      const qy = (sy - ty) / ry;
+      const q2 = qx * qx + qy * qy;
+      const k = Math.sqrt(Math.max(0, q2 - 1)) / q2;
+      const ax = tx + rx * (qx / q2 - qy * k);
+      const ay = ty + ry * (qy / q2 + qx * k);
+      const bx = tx + rx * (qx / q2 + qy * k);
+      const by = ty + ry * (qy / q2 - qx * k);
+      const angle = Math.atan2(ty - sy, tx - sx) * 180 / Math.PI;
+      geometry = { sx, sy, angle, scale: mobile ? .78 : 1 };
+      set(svg, { viewBox: `0 0 ${w} ${h}` });
+      set(mask, { x: 0, y: 0, width: w, height: h });
+      set(cone, { d: `M${sx} ${sy}L${ax} ${ay}A${rx} ${ry} 0 1 1 ${bx} ${by}Z` });
+      set(gradient, { x1: sx, y1: sy, x2: tx, y2: ty });
+      set(mark, { x: tx - width / 2, y: ty - height / 2, width, height });
+      const cloud = ellipse(tx - rx * .28, ty + ry * .11, rx * .84, ry * .73, .54)
+        + ellipse(tx + rx * .30, ty - ry * .18, rx * .79, ry * .66, .55)
+        + ellipse(tx + rx * .08, ty + ry * .39, rx * .93, ry * .43, .42)
+        + ellipse(tx - rx * .19, ty - ry * .38, rx * .62, ry * .43, .32);
+      body.innerHTML = cloud;
+      face.innerHTML = cloud;
+      set(stand, { transform: `translate(${sx} ${sy}) scale(${geometry.scale})` });
+      set(ground, { d: `M${Math.max(0, sx - 160)} ${sy + 46 * geometry.scale}H${Math.min(w, sx + w * .58)}` });
+    }
+
+    function paint(time) {
+      elapsed = still ? 1500 : time;
+      const ignition = smooth(elapsed / 160);
+      const progress = smooth((elapsed - 160) / 900);
+      const aim = 18 * (1 - progress);
+      const exit = smooth((elapsed - 2100) / 400);
+      const { sx, sy, angle, scale } = geometry;
+      set(field, { transform: `rotate(${aim} ${sx} ${sy})` });
+      set(lamp, { transform: `translate(${sx} ${sy}) rotate(${angle + aim}) scale(${scale})` });
+      emission.style.opacity = String(ignition);
+      lens.style.opacity = String(.26 + .74 * ignition);
+      mark.style.filter = `blur(${.2 + 3.8 * (1 - progress) * (1 - progress)}px)`;
+      opening.style.opacity = String(1 - exit);
+      opening.dataset.elapsed = String(Math.round(elapsed));
+      opening.dataset.aim = aim.toFixed(2);
+      opening.dataset.phase = elapsed < 160 ? 'ignition' : elapsed < 1060 ? 'aiming' : elapsed < 2100 ? 'resolved' : 'exit';
+    }
+
+    function tick(now) {
+      if (finished) return;
+      const time = now - startTime;
+      paint(time);
+      if (time >= 2500) dismiss('completed');
+      else frame = requestAnimationFrame(tick);
+    }
+    function onResize() { if (started && !finished) { measure(); paint(elapsed); } }
+    function start() {
+      if (started || finished) return;
+      if (motion.matches || document.hidden || document.querySelector('dialog[open]') || (!forced && (scrollY > 24 || (location.hash && location.hash !== '#top')))) { dismiss('not-at-entry'); return; }
+      if (!forced) { try { sessionStorage.setItem(key, 'seen'); } catch { dismiss('storage-unavailable'); return; } }
+      started = true;
+      removePending();
+      measure();
+      paint(0);
+      document.addEventListener('keydown', onKey);
+      document.addEventListener('focusin', onFocus);
+      document.addEventListener('wheel', onActiveIntent, { capture: true, passive: true });
+      document.addEventListener('touchstart', onActiveIntent, { capture: true, passive: true });
+      document.addEventListener('pointerdown', onActiveIntent, { capture: true, passive: true });
+      motion.addEventListener('change', onMotion);
+      window.addEventListener('resize', onResize);
+      opening.addEventListener('animationend', onSafety);
+      opening.classList.add('is-active');
+      if (still) opening.classList.add('is-still');
+      opening.dataset.state = still ? 'preview' : 'playing';
+      opening.hidden = false;
+      if (!still) {
+        startTime = performance.now();
+        deadline = setTimeout(() => dismiss('completed'), 2800);
+        frame = requestAnimationFrame(tick);
+      }
+    }
+    pendingEvents.forEach(name => document.addEventListener(name, onPending, { capture: true, passive: true }));
+    window.addEventListener('hashchange', onNavigation);
+    document.addEventListener('visibilitychange', onVisibility);
+    const source = new Image();
+    source.addEventListener('error', () => dismiss('asset-error'), { once: true });
+    source.addEventListener('load', start, { once: true });
+    mark.addEventListener('error', () => dismiss('asset-error'), { once: true });
+    source.src = '/media/elite-logo.png';
+    if (source.complete) { if (source.naturalWidth) start(); else dismiss('asset-error'); }
+  })();
+</script>

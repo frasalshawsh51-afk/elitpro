@@ -1,0 +1,55 @@
+{
+  "privatePrototype": true,
+  "publicationRightsUnresolved": true,
+  "reference": {
+    "libraryId": "libfile_f5e87fa9d0008191a956167f75cc68c2",
+    "local": "qa/owner-reference/thumbnail-request.png",
+    "bytes": 853650,
+    "sha256": "943e7a859c3f036fa2bc39230ce3bbc7df59108d91f324a277ddbbd7fe1417a7",
+    "identifiedCard": "02 / SAUDI FILM CONFEX"
+  },
+  "noor": {
+    "source": "source-assets/official-noor/poster_19162.png",
+    "sourceURL": "https://redseafilmfest.com/files_secured/poster_19162.png?id=10",
+    "filmRecord": "https://redseafilmfest.com/en/rsiff_film/noor/",
+    "bytes": 1039508,
+    "sha256": "ffeed516f188e0f4994b701665798dee8817b71a4479bde7f8c3fc2f29f5db8b",
+    "desktopCrop": {
+      "left": 0,
+      "top": 95,
+      "width": 700,
+      "height": 484
+    },
+    "mobileCrop": {
+      "left": 0,
+      "top": 70,
+      "width": 700,
+      "height": 538
+    },
+    "sourcePreserved": true,
+    "usedInWebsite": "Optimized crop of verified official one-sheet; no generated image."
+  },
+  "confex": {
+    "source": "video5987844027406359657.mp4",
+    "libraryId": "libfile_35601ba364d88191aaeb09f788840fb8",
+    "exactFrameSeconds": 26.1,
+    "desktopCrop": {
+      "left": 98,
+      "top": 90,
+      "width": 1080,
+      "height": 540
+    },
+    "mobileCrop": {
+      "left": 98,
+      "top": 90,
+      "width": 1080,
+      "height": 540,
+      "resizeWidth": 864
+    },
+    "subject": "Attendees meeting on the forum floor; names/roles not asserted."
+  },
+  "sourceFilesUnchanged": true,
+  "videoSourcesUnchanged": true,
+  "contractualRolesNotAsserted": true,
+  "revision": "Owner rejected interview/camera previews; final imagery uses official NOOR poster and a forum attendee gathering."
+}

@@ -1,0 +1,129 @@
+---
+import '../styles/services-motion.css';
+---
+
+<script>
+  /** Decorative enhancement only: each service and its action always stay in the document. */
+  function initializeProductionWindows() {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduce.matches || !('IntersectionObserver' in window)) return;
+    const windows = [...document.querySelectorAll<HTMLElement>('[data-production-window]')];
+    if (!windows.length) return;
+
+    type ProductionWindow = {
+      article: HTMLElement;
+      image: HTMLElement;
+      poster: HTMLImageElement;
+      aperture: HTMLSpanElement;
+      state: 'waiting' | 'exposing' | 'exposed';
+      visible: boolean;
+      finishTimer: number;
+      loadTimer: number;
+      onLoad: (() => void) | null;
+      onError: (() => void) | null;
+    };
+    const records = new Map<HTMLElement, ProductionWindow>();
+    let stopped = false;
+    const canExpose = () => !document.hidden
+      && !document.querySelector('[data-opening-signal]:not([hidden])')
+      && !document.querySelector('dialog[open]');
+
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        const record = records.get(entry.target as HTMLElement);
+        if (!record) continue;
+        record.visible = entry.isIntersecting;
+        if (record.visible) expose(record);
+        else if (record.state === 'exposing') finish(record);
+      }
+    }, { threshold: .12, rootMargin: '0px 0px -5% 0px' });
+
+    function cleanup() {
+      if (stopped) return;
+      stopped = true;
+      observer.disconnect();
+      reduce.removeEventListener('change', onMotion);
+      document.removeEventListener('visibilitychange', onVisibility);
+      document.removeEventListener('focusin', onFocus);
+      document.removeEventListener('elite:opening-end', resume);
+      document.removeEventListener('close', resume, true);
+    }
+
+    function finish(record: ProductionWindow) {
+      if (record.state === 'exposed') return;
+      record.state = 'exposed';
+      clearTimeout(record.finishTimer);
+      clearTimeout(record.loadTimer);
+      if (record.onLoad) record.poster.removeEventListener('load', record.onLoad);
+      if (record.onError) record.poster.removeEventListener('error', record.onError);
+      record.aperture.remove();
+      record.article.dataset.productionState = 'exposed';
+      record.article.classList.remove('is-exposing');
+      record.article.classList.add('is-exposed');
+      observer.unobserve(record.article);
+      if ([...records.values()].every(item => item.state === 'exposed')) cleanup();
+    }
+
+    function expose(record: ProductionWindow) {
+      if (stopped || record.state !== 'waiting' || !record.visible || !canExpose()) return;
+      if (reduce.matches) { finish(record); return; }
+      if (!record.poster.complete) {
+        if (!record.onLoad) {
+          record.onLoad = () => { clearTimeout(record.loadTimer); expose(record); };
+          record.onError = () => finish(record);
+          record.poster.addEventListener('load', record.onLoad, { once: true });
+          record.poster.addEventListener('error', record.onError, { once: true });
+          record.loadTimer = window.setTimeout(() => finish(record), 1200);
+        }
+        return;
+      }
+      if (!record.poster.naturalWidth) { finish(record); return; }
+      record.state = 'exposing';
+      record.article.dataset.productionState = 'exposing';
+      record.article.classList.add('is-exposing');
+      record.aperture.addEventListener('animationend', event => {
+        if (event.animationName === 'production-open-top' || event.animationName === 'production-open-bottom') finish(record);
+      }, { once: true });
+      record.finishTimer = window.setTimeout(() => finish(record), 440);
+    }
+
+    function revealAll() { records.forEach(finish); }
+    function onMotion() { if (reduce.matches) revealAll(); }
+    function onVisibility() { if (document.hidden) revealAll(); }
+    function onFocus(event: FocusEvent) {
+      const article = (event.target as Element | null)?.closest<HTMLElement>('[data-production-window]');
+      const record = article && records.get(article);
+      if (record) finish(record);
+    }
+    function resume() { records.forEach(record => { if (record.visible) expose(record); }); }
+
+    for (const article of windows) {
+      const image = article.querySelector<HTMLElement>('[data-production-image]');
+      const poster = image?.querySelector<HTMLImageElement>('img');
+      if (!image || !poster || article.dataset.productionReady) continue;
+      const aperture = document.createElement('span');
+      aperture.className = 'production-aperture';
+      aperture.setAttribute('aria-hidden', 'true');
+      const record: ProductionWindow = {
+        article, image, poster, aperture, state: 'waiting', visible: false,
+        finishTimer: 0, loadTimer: 0, onLoad: null, onError: null,
+      };
+      records.set(article, record);
+      // Observe before enabling the decorative leaves. The unenhanced image is always visible.
+      observer.observe(article);
+      image.append(aperture);
+      article.dataset.productionReady = 'true';
+      article.dataset.productionState = 'waiting';
+    }
+    if (!records.size) { cleanup(); return; }
+    reduce.addEventListener('change', onMotion);
+    document.addEventListener('visibilitychange', onVisibility);
+    document.addEventListener('focusin', onFocus);
+    document.addEventListener('elite:opening-end', resume);
+    document.addEventListener('close', resume, true);
+    if (document.hidden || reduce.matches) revealAll();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initializeProductionWindows, { once: true });
+  else initializeProductionWindows();
+</script>

@@ -1,0 +1,63 @@
+{
+  "originalsUnchanged": true,
+  "privatePrototype": true,
+  "publicationRightsUnresolved": true,
+  "assets": [
+    {
+      "publicFiles": [
+        "elite-logo.png",
+        "elite-symbol.png"
+      ],
+      "source": "ElitePro-v4-editable-source.zip/elitepro-motion/public/derived/current-logo.png",
+      "libraryId": "libfile_70a59c1cce048191afd3fb42af92ce0a",
+      "note": "Existing raster logo; symbol is a pixel crop of the supplied artwork, not a redraw."
+    },
+    {
+      "publicFiles": [
+        "hero-poster-800.webp",
+        "hero-poster-1280.webp",
+        "confex-poster.webp",
+        "confex-poster-mobile.webp",
+        "hero-loop.mp4",
+        "confex.mp4"
+      ],
+      "source": "video5987844027406359657.mp4",
+      "libraryId": "libfile_35601ba364d88191aaeb09f788840fb8",
+      "note": "Hero still at 55.8s. Final Confex card is the attendee gathering at exact26.1s: crop98,90,1080,540; mobile resized864x432. Hero silent excerpts 55.6–58.4, 1.7–4.1, 41.6–44.4. Existing letterbox bars removed."
+    },
+    {
+      "publicFiles": [
+        "noor.mp4"
+      ],
+      "source": "video5987844027406359660.mp4",
+      "libraryId": "libfile_8f80d4532e948191b529a43be0700d5a",
+      "note": "Original supplied NOOR project/premiere video retained. Project role and public publication rights remain unresolved. No contractual credit asserted."
+    },
+    {
+      "publicFiles": [
+        "noor-poster.webp",
+        "noor-poster-mobile.webp"
+      ],
+      "source": "source-assets/official-noor/poster_19162.png",
+      "sourceURL": "https://redseafilmfest.com/files_secured/poster_19162.png?id=10",
+      "note": "Official NOOR one-sheet from verified RedSea film record. Preserved original; desktopcrop0,95,700,484; mobile0,70,700,538. Owner requested a different cinematic image after rejecting the interview still. Publication rights/contractualrole remain unresolved; private local prototype."
+    },
+    {
+      "publicFiles": [
+        "identity-poster.webp",
+        "identity.mp4"
+      ],
+      "source": "video5987844027406359659.mp4",
+      "libraryId": "libfile_f7d074afd4008191baa60d8901e0268c",
+      "note": "Poster at 11s. Genuine identity film."
+    },
+    {
+      "publicFiles": [
+        "booth-800.webp"
+      ],
+      "source": "5987844027866353323.jpg",
+      "libraryId": "libfile_3b9427a34b0481918c22654d9ef295ad",
+      "note": "Historical branding retained. Subjects not identified as employees or clients."
+    }
+  ]
+}

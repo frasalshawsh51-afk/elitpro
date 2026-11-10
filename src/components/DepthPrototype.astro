@@ -1,0 +1,50 @@
+---
+import '../styles/depth-prototype.css';
+---
+<script>
+  const requested = new URLSearchParams(location.search).get('depth');
+  {
+    const root = document.documentElement;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    const pointer = matchMedia('(min-width: 768px) and (hover: hover) and (pointer: fine)');
+    const surfaces = [...document.querySelectorAll<HTMLElement>('[data-depth-surface]')];
+    const visible = new Set<HTMLElement>();
+    const mode = requested === 'off' ? 'off' : 'on';
+    const frames = new Map<HTMLElement, number>();
+    const reset = (surface: HTMLElement) => {
+      cancelAnimationFrame(frames.get(surface) || 0); frames.delete(surface);
+      ['--depth-x','--depth-y','--depth-rx','--depth-ry'].forEach(name => surface.style.removeProperty(name));
+      surface.dataset.depthState = 'neutral';
+    };
+    const eligible = () => mode === 'on' && pointer.matches && !reduce.matches && !document.hidden && !document.querySelector('dialog[open]') && !document.querySelector('[data-opening-signal]:not([hidden])');
+    const refresh = () => { root.dataset.depthMotion = eligible() ? 'on' : 'off'; surfaces.forEach(reset); };
+    root.classList.add('depth-prototype'); root.dataset.depth = mode; refresh();
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+      const surface = entry.target as HTMLElement;
+      if (entry.isIntersecting) visible.add(surface); else { visible.delete(surface); reset(surface); }
+    }), { threshold: .08 });
+    surfaces.forEach(surface => {
+      observer.observe(surface);
+      surface.dataset.depthState = 'neutral';
+      surface.addEventListener('pointermove', event => {
+        if (!eligible() || event.pointerType !== 'mouse' || !visible.has(surface)) { reset(surface); return; }
+        cancelAnimationFrame(frames.get(surface) || 0);
+        frames.set(surface, requestAnimationFrame(() => {
+          const box = surface.getBoundingClientRect();
+          const x = Math.max(-1, Math.min(1, (event.clientX - box.left) / box.width * 2 - 1));
+          const y = Math.max(-1, Math.min(1, (event.clientY - box.top) / box.height * 2 - 1));
+          surface.style.setProperty('--depth-x', `${(x * 3).toFixed(2)}px`);
+          surface.style.setProperty('--depth-y', `${(y * 2).toFixed(2)}px`);
+          surface.style.setProperty('--depth-rx', `${(-y * .25).toFixed(3)}deg`);
+          surface.style.setProperty('--depth-ry', `${(x * .35).toFixed(3)}deg`);
+          surface.dataset.depthState = 'active'; frames.delete(surface);
+        }));
+      }, { passive: true });
+      surface.addEventListener('pointerleave', () => reset(surface));
+    });
+    pointer.addEventListener('change', refresh); reduce.addEventListener('change', refresh);
+    document.addEventListener('visibilitychange', refresh); window.addEventListener('blur', refresh);
+    document.addEventListener('elite:opening-end', refresh);
+    new MutationObserver(refresh).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  }
+</script>

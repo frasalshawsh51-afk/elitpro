@@ -1,0 +1,24 @@
+---
+interface Props { name?: string; class?: string; }
+const { name = 'arrow', class: className = '' } = Astro.props;
+const paths: Record<string, string> = {
+  arrow: 'M18 6H6v12M6 6l12 12',
+  external: 'M6 18 18 6M6 6h12v12',
+  plus: 'M12 5v14M5 12h14',
+  close: 'm6 6 12 12M18 6 6 18',
+  play: 'm9 5 11 7-11 7V5Z',
+  pause: 'M8 5v14M16 5v14',
+  menu: 'M4 8h16M4 16h16',
+  down: 'm6 9 6 6 6-6',
+  film: 'M4 5h12v14H4V5Zm12 5 5-3v10l-5-3M7 5v14',
+  campaign: 'm4 10 12-5v14L4 14v-4Zm2 5 2 5h4l-2-4M20 8v8',
+  event: 'M4 6h16v14H4V6ZM8 3v6M16 3v6M4 11h16M8 15h2M14 15h2',
+  identity: 'm12 3 9 9-9 9-9-9 9-9Zm0 5 4 4-4 4-4-4 4-4Z',
+  interactive: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l3 3M15 15l3 3M18 6l-3 3M9 15l-3 3',
+  ai: 'M8 4h8l4 4v8l-4 4H8l-4-4V8l4-4ZM8 15l3-6 3 6M9 13h4M17 9v6',
+  mail: 'M3 5h18v14H3V5Zm0 1 9 7 9-7',
+  copy: 'M9 8h11v13H9V8ZM5 16H3V2h11v2',
+  check: 'm5 12 4 4L19 6',
+};
+---
+<svg class={className} data-icon={name} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={paths[name] || paths.arrow} /></svg>

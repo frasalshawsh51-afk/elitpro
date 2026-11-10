@@ -1,0 +1,7 @@
+---
+import ProjectedSignal from './ProjectedSignal.astro';
+import type { Locale } from '../data/site-copy';
+interface Props { locale?: Locale; }
+const {locale = 'ar'} = Astro.props;
+---
+<ProjectedSignal locale={locale} />

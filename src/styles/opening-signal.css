@@ -1,0 +1,34 @@
+/* The supplied raster mark is projected intact. No video, canvas or 3D runtime. */
+.opening-signal[hidden]{display:none!important}
+.opening-signal{position:fixed;inset:0;z-index:90;overflow:hidden;background:#0a2226;color:#edf6f2;isolation:isolate}
+.signal-sky{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 64% 34%,#1e6b6e20,transparent 47%),#0a2226}
+.signal-atmosphere{position:absolute;inset:0;background:radial-gradient(ellipse at 28% 72%,#1e6b6e14,transparent 45%),linear-gradient(180deg,#04121548,transparent 45%,#04121538)}
+.signal-stage{position:absolute;left:50%;top:47%;width:min(1100px,100vw);height:min(680px,82svh);transform:translate(-50%,-50%)}
+.signal-cloud{position:absolute;pointer-events:none;background:radial-gradient(ellipse at 20% 57%,#acd0c81b,transparent 31%),radial-gradient(ellipse at 45% 35%,#739da225,transparent 36%),radial-gradient(ellipse at 77% 60%,#9dc6c31d,transparent 37%);opacity:.65}
+.signal-cloud-far{inset:-15%;transform:rotate(-8deg);background:radial-gradient(ellipse at 54% 36%,#b0d9dc0e,transparent 27%),radial-gradient(ellipse at 77% 39%,#7da4a51a,transparent 23%),radial-gradient(ellipse at 34% 56%,#739da20d,transparent 26%)}
+.signal-beam{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:21% 78%;opacity:0;pointer-events:none}
+.signal-projection{position:absolute;width:clamp(150px,18vw,220px);left:64%;top:29%;transform:translate(-50%,-50%);isolation:isolate}
+.signal-halo{position:absolute;inset:-22% -35%;z-index:-1;background:radial-gradient(ellipse,#82b9b31b,transparent 65%)}
+.signal-mark{width:100%;height:auto;opacity:0;filter:none}
+.signal-roof{position:absolute;left:3%;right:3%;top:84%;height:1px;background:linear-gradient(90deg,transparent,#40666460 25%,#40666430 65%,transparent);opacity:.5}
+.signal-projector{position:absolute;left:21%;top:78%;width:0;height:0}
+.signal-projector-body{position:absolute;left:-43px;top:-8px;width:49px;height:27px;transform:rotate(-34deg);border:1px solid #325051;background:linear-gradient(180deg,#19393c,#0b2227 46%,#091d22);border-radius:5px 10px 10px 5px}
+.signal-projector-lens{position:absolute;left:-7px;top:-14px;width:14px;height:28px;transform:rotate(-34deg);border:2px solid #365759;border-radius:50%;background:#c5dbd3;box-shadow:0 0 7px #b3d4cc40}
+.signal-projector-stand{position:absolute;left:-25px;top:13px;width:4px;height:26px;background:#1d3b40;border-inline-start:1px solid #416064;transform:rotate(7deg)}
+.signal-projector-stand::after{content:"";position:absolute;left:-12px;bottom:-2px;width:28px;height:3px;background:#173337;border-top:1px solid #365559}
+.signal-wordmark{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.22em;color:#98b9b5;white-space:nowrap}
+.signal-skip{position:absolute;top:max(25px,env(safe-area-inset-top));inset-inline-end:max(30px,env(safe-area-inset-left));display:flex;align-items:center;gap:16px;min-height:44px;padding:8px 14px;font-size:12px;border:1px solid #76959370;border-radius:3px;background:#06191c80;color:#d0e3dc;z-index:3}
+.signal-skip:hover{border-color:#b8d7d0;background:#19373b}.signal-skip:focus-visible{outline:2px solid #acd0c8;outline-offset:5px}
+.opening-signal.is-active{animation:signal-exit 420ms ease 1660ms forwards,signal-safety 0ms 2600ms forwards}
+.is-active .signal-beam{animation:signal-sweep 740ms cubic-bezier(.2,.65,.3,1) 140ms both}
+.is-active .signal-mark{animation:signal-appear 600ms ease 460ms both}
+.is-active .signal-cloud-far{animation:signal-drift 2080ms ease-out both}
+@keyframes signal-sweep{from{opacity:0;transform:rotate(-8deg)}to{opacity:1;transform:rotate(0)}}
+@keyframes signal-appear{from{opacity:0}to{opacity:.97}}
+@keyframes signal-drift{from{transform:translate(-.6%,.4%) rotate(-8deg);opacity:.35}to{transform:translate(.4%,-.3%) rotate(-8deg);opacity:.6}}
+@keyframes signal-exit{to{opacity:0;visibility:hidden;pointer-events:none}}
+@keyframes signal-safety{to{opacity:0;visibility:hidden;pointer-events:none}}
+.opening-signal.is-still,.is-still .signal-beam,.is-still .signal-mark,.is-still .signal-cloud-far{animation:none}
+.is-still .signal-beam{opacity:1;transform:none}.is-still .signal-mark{opacity:.96;transform:none}
+@media(max-width:600px){.signal-stage{width:100%;height:68svh;top:46%}.signal-projection{width:clamp(136px,37vw,168px);left:64%;top:29%}.signal-projector{transform:scale(.85)}.signal-skip{top:max(18px,env(safe-area-inset-top));inset-inline-end:20px;font-size:12px}.signal-wordmark{bottom:15%;font-size:8px;letter-spacing:.19em}}
+@media(prefers-reduced-motion:reduce){.opening-signal{display:none!important}.opening-signal *{animation:none!important}}

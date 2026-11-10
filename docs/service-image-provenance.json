@@ -1,0 +1,161 @@
+{
+  "purpose": "Six production windows, separate from the selected-work portfolio",
+  "version": 2,
+  "assets": [
+    {
+      "id": "film",
+      "source": "qa/thumbnail-selection/video5987844027406359657-55.8.jpg",
+      "crop": {
+        "left": 80,
+        "top": 90,
+        "width": 864,
+        "height": 540
+      },
+      "generated": false,
+      "libraryId": "libfile_35601ba364d88191aaeb09f788840fb8",
+      "frame": 55.8,
+      "output": "public/media/services/film.webp",
+      "bytes": 19348
+    },
+    {
+      "id": "events",
+      "source": "qa/thumbnail-selection/video5987844027406359657-41.8.jpg",
+      "crop": {
+        "left": 0,
+        "top": 90,
+        "width": 960,
+        "height": 540
+      },
+      "generated": false,
+      "libraryId": "libfile_35601ba364d88191aaeb09f788840fb8",
+      "frame": 41.8,
+      "output": "public/media/services/events.webp",
+      "bytes": 25484
+    },
+    {
+      "id": "identity",
+      "source": "qa/thumbnail-selection/video5987844027406359657-14.0.jpg",
+      "crop": {
+        "left": 412,
+        "top": 90,
+        "width": 864,
+        "height": 540
+      },
+      "generated": false,
+      "libraryId": "libfile_35601ba364d88191aaeb09f788840fb8",
+      "frame": 14,
+      "output": "public/media/services/identity.webp",
+      "bytes": 15424
+    },
+    {
+      "id": "campaigns",
+      "original": "source-assets/service-production-v2/campaigns.png",
+      "originalWidth": 1402,
+      "originalHeight": 1122,
+      "outputs": [
+        {
+          "output": "public/media/services/campaigns-production-640.webp",
+          "width": 640,
+          "height": 400,
+          "bytes": 31766,
+          "sha256": "7672c38f5dba53f1ac28398a8f3b3fdbfd19d3bdb0a1f11e0a39749dd509aca4"
+        },
+        {
+          "output": "public/media/services/campaigns-production-1200.webp",
+          "width": 1200,
+          "height": 750,
+          "bytes": 103720,
+          "sha256": "18e26b20598aa9bba23467a7115671006140937094a6b170a5e47591ba2cd271"
+        }
+      ],
+      "source": "source-assets/service-production-v2/campaigns.png",
+      "generated": true,
+      "tool": "built-in image_gen",
+      "note": "Original conceptual illustration of a service; not real client work or a project credit.",
+      "crop": "Deterministic centered 8:5 cover crops; inspected at desktop and mobile sizes"
+    },
+    {
+      "id": "interactive",
+      "original": "source-assets/service-production-v2/interactive.png",
+      "originalWidth": 1402,
+      "originalHeight": 1122,
+      "outputs": [
+        {
+          "output": "public/media/services/interactive-production-640.webp",
+          "width": 640,
+          "height": 400,
+          "bytes": 28842,
+          "sha256": "732c5ff7a1a455f27bfcbdf6789802e29e92ccb7360e1bd65a5e3bc716c575c4"
+        },
+        {
+          "output": "public/media/services/interactive-production-1200.webp",
+          "width": 1200,
+          "height": 750,
+          "bytes": 94910,
+          "sha256": "94600439101db909257e82c7cbb27180da12dc2d846ae8015b5170c8334f2d02"
+        }
+      ],
+      "source": "source-assets/service-production-v2/interactive.png",
+      "generated": true,
+      "tool": "built-in image_gen",
+      "note": "Original conceptual illustration of a service; not real client work or a project credit.",
+      "crop": "Deterministic centered 8:5 cover crops; inspected at desktop and mobile sizes"
+    },
+    {
+      "id": "ai",
+      "original": "source-assets/service-production-v2/ai.png",
+      "originalWidth": 1586,
+      "originalHeight": 992,
+      "outputs": [
+        {
+          "output": "public/media/services/ai-production-640.webp",
+          "width": 640,
+          "height": 400,
+          "bytes": 41604,
+          "sha256": "9d658aaa9672e2942cf152b14df420d74949564866aa7571677d1db9fe1bf4cb"
+        },
+        {
+          "output": "public/media/services/ai-production-1200.webp",
+          "width": 1200,
+          "height": 750,
+          "bytes": 110396,
+          "sha256": "dfb9fab58673ba75ea2a3edef7ddf307f782c26521cd778ead2590ed430b4345"
+        }
+      ],
+      "source": "source-assets/service-production-v2/ai.png",
+      "generated": true,
+      "tool": "built-in image_gen",
+      "note": "Original conceptual illustration of a service; not real client work or a project credit.",
+      "crop": "Deterministic centered 8:5 cover crops; inspected at desktop and mobile sizes"
+    }
+  ],
+  "prompts": "docs/services-production-prompts-v2.json",
+  "retiredConcepts": [
+    {
+      "id": "campaigns",
+      "source": "source-assets/service-concepts/campaigns.png",
+      "generated": true,
+      "note": "Conceptual service illustration generated with built-in image_gen; no real client/project claim.",
+      "output": "public/media/services/campaigns.webp",
+      "bytes": 26050
+    },
+    {
+      "id": "interactive",
+      "source": "source-assets/service-concepts/interactive.png",
+      "generated": true,
+      "note": "Conceptual service illustration generated with built-in image_gen; no real client/project claim.",
+      "output": "public/media/services/interactive.webp",
+      "bytes": 38172
+    },
+    {
+      "id": "ai",
+      "source": "source-assets/service-concepts/ai.png",
+      "generated": true,
+      "note": "Conceptual service illustration generated with built-in image_gen; no real client/project claim.",
+      "output": "public/media/services/ai.webp",
+      "bytes": 39394
+    }
+  ],
+  "retiredPrompts": "docs/services-image-prompts.json",
+  "originalsPreserved": true
+}

@@ -1,0 +1,10 @@
+---
+interface Props { name: 'instagram' | 'linkedin' | 'vimeo'; }
+const { name } = Astro.props;
+// Local, source-verified brand glyphs; see docs/footer-refinement.md for provenance.
+const sources = import.meta.glob('../assets/social/*.svg', { query: '?raw', import: 'default', eager: true });
+const source = sources[`../assets/social/${name}.svg`] as string;
+const viewBox = name === 'linkedin' ? '0 0 16 16' : '0 0 24 24';
+const path = source.match(/<path[^>]*d="([^"]+)"/)?.[1];
+---
+<svg width="20" height="20" viewBox={viewBox} fill="currentColor" aria-hidden="true" focusable="false"><path d={path} /></svg>

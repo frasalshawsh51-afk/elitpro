@@ -1,0 +1,17 @@
+/* One optical field controls the light, receiving haze and supplied raster mark. */
+.projected-signal[hidden]{display:none!important}
+.projected-signal{position:fixed;inset:0;z-index:90;overflow:hidden;isolation:isolate;background:#07191e;color:#edf4ef}
+.projected-sky{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 64% 34%,#18383b38,transparent 48%),linear-gradient(180deg,#06161b,#0a2025 72%,#06181d)}
+.projected-optics{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.projected-ground{fill:none;stroke:#74928a;stroke-opacity:.13;stroke-width:1}
+.projected-cloud-body{fill:#294044;opacity:.25}
+.projected-cloud-face{fill:#abc5bd;opacity:.25}
+.projected-mark{opacity:.91;filter:blur(4px)}
+.projected-stand{fill:none;stroke:#3c5859;stroke-width:3;stroke-linecap:round;opacity:.82}
+.projected-lamp-yoke{fill:none;stroke:#486362;stroke-width:3}
+.projected-tagline{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.22em;color:#86a5a0;white-space:nowrap}
+.projected-signal.is-active{animation:projected-safety 0ms 2900ms forwards}
+.projected-signal.is-still{animation:none}
+@keyframes projected-safety{to{opacity:0;visibility:hidden;pointer-events:none}}
+@media(max-width:600px){.projected-sky{background:radial-gradient(ellipse at 60% 32%,#18383b38,transparent 49%),linear-gradient(180deg,#06161b,#0a2025 72%,#06181d)}.projected-tagline{bottom:10%;font-size:8px;letter-spacing:.19em}}
+@media(prefers-reduced-motion:reduce){.projected-signal{display:none!important}.projected-signal *{animation:none!important}}

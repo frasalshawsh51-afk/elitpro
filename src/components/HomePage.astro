@@ -1,0 +1,196 @@
+---
+import '@fontsource/ibm-plex-sans-arabic/400.css';
+import '@fontsource/ibm-plex-sans-arabic/500.css';
+import '@fontsource/ibm-plex-sans-arabic/600.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '../styles/global.css';
+import Icon from './Icon.astro';
+import SocialIcon from './SocialIcon.astro';
+import OpeningSignal from './OpeningSignal.astro';
+import ServicesMotion from './ServicesMotion.astro';
+import '../styles/production-windows.css';
+import DepthPrototype from './DepthPrototype.astro';
+import { services as serviceAssets, films, processSteps as stepAssets } from '../data/home';
+import { siteCopy, type Locale } from '../data/site-copy';
+interface Props { locale?: Locale; }
+const {locale = 'ar'} = Astro.props;
+const copy = siteCopy[locale];
+const services = serviceAssets.map(s => ({...s, ...copy.serviceCopy[s.id]}));
+const processSteps = stepAssets.map((s,i) => ({...s, ...copy.processSteps[i]}));
+const localizedFilms = Object.fromEntries(Object.entries(films).map(([id,film]) => ({id,film})).map(({id,film}) => [id,{...film,...copy.film[id as keyof typeof films]}]));
+const alternateHref = locale === 'ar' ? '/en/' : '/';
+---
+<!doctype html>
+<html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0A2226" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>{copy.page.title}</title>
+    <meta name="description" content={copy.page.description} /><link rel="alternate" hreflang="ar" href="/" /><link rel="alternate" hreflang="en" href="/en/" />
+    <link rel="icon" type="image/png" href="/media/elite-symbol.png" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{copy.page.skipToContent}</a>
+    <OpeningSignal locale={locale} />
+    <header class="site-header">
+      <div class="header-inner container">
+        <a href="#top" class="brand" aria-label={copy.page.brandHomeLabel}><img src="/media/elite-logo.png" width="328" height="362" alt={copy.page.brandImageAlt} /></a>
+        <nav class="desktop-nav" aria-label={copy.nav.ariaLabel}>
+          <a href="#services">{copy.nav.services}</a><a href="#work">{copy.nav.work}</a><a href="#about">{copy.nav.about}</a><a href="#process">{copy.nav.process}</a><a href="#contact">{copy.nav.contact}</a>
+        </nav>
+        <div class="header-actions"><a class="language-switch" data-language-link href={alternateHref} hreflang={locale === 'ar' ? 'en' : 'ar'} lang={locale === 'ar' ? 'en' : 'ar'} aria-label={copy.page.alternateLanguageName}>{locale === 'ar' ? 'EN' : 'العربية'}</a>
+          <button type="button" class="button button-small button-light" data-brief-open>{copy.nav.startProject} <Icon /></button>
+          <button type="button" class="menu-toggle icon-button" aria-label={copy.menu.open} aria-haspopup="dialog" aria-controls="mobile-menu" aria-expanded="false"><Icon name="menu" /></button>
+        </div>
+      </div>
+    </header>
+    <DepthPrototype />
+
+    <main id="main">
+      <section class="hero container" id="top" aria-labelledby="hero-heading">
+        <div class="hero-intro">
+          <div class="hero-title-wrap">
+            <p class="eyebrow"><span class="status-dot"></span> {copy.hero.eyebrowBrand} <span class="eyebrow-separator">/</span> {copy.hero.location}</p>
+            <h1 id="hero-heading">{copy.hero.headingLead}<br />{copy.hero.headingLink}{copy.hero.headingLink && ' '}<span>{copy.hero.headingAccent}</span></h1>
+          </div>
+          <div class="hero-description">
+            <p>{copy.hero.description}</p>
+            <a class="text-link" href="#work">{copy.hero.workLink} <Icon /></a>
+          </div>
+        </div>
+        <div class="hero-media-shell" data-depth-surface="hero"><div class="hero-media">
+          <picture>
+            <source media="(max-width: 600px)" srcset="/media/hero-poster-800.webp" />
+            <img class="hero-poster" src="/media/hero-poster-1280.webp" srcset="/media/hero-poster-800.webp 800w, /media/hero-poster-1280.webp 1280w" sizes="(max-width: 700px) 100vw, 92vw" width="1276" height="540" fetchpriority="high" alt={copy.hero.imageAlt} />
+          </picture>
+          <video class="hero-video" id="hero-video" data-src="/media/hero-loop.mp4" autoplay muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+          <div class="hero-shade"></div>
+          <div class="hero-media-top"><span class="frame-corner"></span><span class="latin" lang="en" dir="ltr">{copy.hero.agencyLine}</span></div>
+          <div class="hero-media-bottom">
+            <span class="hero-caption">{copy.hero.mediaCaption}</span>
+            <button type="button" class="loop-toggle icon-button" aria-label={copy.hero.playPreview} aria-pressed="false"><span class="pause-icon"><Icon name="pause" /></span><span class="play-icon"><Icon name="play" /></span></button>
+          </div>
+        </div></div>
+        <div class="hero-foot"><span>{copy.hero.footline}</span><a href="#services" class="scroll-link">{copy.hero.servicesLink} <Icon name="down" /></a><span class="latin" lang="en" dir="ltr">ESTABLISH TO END.</span></div>
+      </section>
+
+      <section class="services" id="services" aria-labelledby="services-heading">
+        <div class="container">
+          <div class="services-heading">
+            <div><p class="eyebrow"><span class="small-dash"></span> {copy.servicesIntro.eyebrow}</p><h2 id="services-heading">{copy.servicesIntro.heading}<span class="heading-dot">.</span></h2></div>
+            <div class="services-introduction"><p>{copy.servicesIntro.description}</p><a class="text-link" href="#work">{copy.servicesIntro.workLink} <Icon /></a></div>
+          </div>
+          <nav class="production-index" aria-label={copy.servicesIntro.indexLabel}>
+            <ol>{services.map(service => <li><a href={`#service-${service.id}`}><span class="latin" dir="ltr" aria-hidden="true">{service.number}</span><span>{service.title}</span><Icon name="down" /></a></li>)}</ol>
+          </nav>
+          <div class="production-windows">
+            {services.map(service => (
+              <article class={`production-window production-window--${service.id}`} id={`service-${service.id}`} aria-labelledby={`service-${service.id}-title`} tabindex="-1" data-production-window>
+                <div class="production-window-image" data-production-image>
+                  <img src={service.image} srcset={'imageSmall' in service ? `${service.imageSmall} 640w, ${service.image} 1200w` : undefined} sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1440px) calc((100vw - 160px) / 2 - 20px), 620px" alt={service.imageAlt} width="1200" height="750" loading="lazy" decoding="async" />
+                  <span class="production-window-number latin" dir="ltr" aria-hidden="true">{service.number}</span>
+                  <span class="production-window-corner" aria-hidden="true"></span>
+                </div>
+                <div class="production-window-body">
+                  {locale === 'ar' && <span class="production-window-english latin" lang="en" dir="ltr">{service.en}</span>}
+                  <h3 id={`service-${service.id}-title`}>{service.title}</h3>
+                  <p>{service.description}</p>
+                  <button type="button" class="production-window-action text-link" data-brief-open data-service={service.id} aria-describedby={`service-${service.id}-title`}>{copy.servicesIntro.requestService}<Icon /></button>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div class="services-bottom"><span>{copy.servicesIntro.multipleServices}</span><button class="text-link" type="button" data-brief-open>{copy.servicesIntro.discussProject} <Icon /></button></div>
+        </div>
+      </section>
+      <ServicesMotion />
+
+      <section class="work container section-space" id="work" aria-labelledby="work-heading">
+        <div class="section-heading-row"><div><p class="eyebrow"><span class="small-dash"></span> {copy.work.eyebrow}</p><h2 id="work-heading">{copy.work.heading}<span class="heading-dot">.</span></h2></div><p>{copy.work.descriptionLines.map((line,i) => <>{i > 0 && <br />}{line}</>)}</p></div>
+        <div class="work-grid">
+          <article class="work-card work-featured" data-depth-surface="card">
+            <div class="work-media-shell">
+            <button type="button" class="work-image" data-film="noor" aria-label={copy.work.noor.watchLabel}><picture><source media="(max-width:767px)" srcset="/media/noor-poster-mobile.webp" /><img src="/media/noor-poster.webp" width="700" height="484" loading="lazy" alt={copy.work.noor.imageAlt} /></picture><span class="work-index latin" dir="ltr">{copy.work.noor.indexLabel}</span><span class="work-play"><Icon name="play" /></span><span class="work-image-label">{copy.work.watchVideo} <Icon /></span></button>
+            </div>
+            <div class="work-caption"><div><span class="category">{copy.work.noor.category}</span><h3>{copy.work.noor.title} {locale === 'ar' && <span class="latin" lang="en" dir="ltr">NOOR</span>}</h3></div><Icon /></div>
+          </article>
+          <article class="work-card work-secondary">
+            <button type="button" class="work-image" data-film="confex" aria-label={copy.work.confex.watchLabel}><picture><source media="(max-width:767px)" srcset="/media/confex-poster-mobile.webp" /><img src="/media/confex-poster.webp" width="1080" height="540" loading="lazy" alt={copy.work.confex.imageAlt} /></picture><span class="work-index latin" dir="ltr">{copy.work.confex.indexLabel}</span><span class="work-play"><Icon name="play" /></span><span class="work-image-label">{copy.work.watchVideo} <Icon /></span></button>
+            <div class="work-caption"><div><span class="category">{copy.work.confex.category}</span><h3>{copy.work.confex.title}</h3></div><Icon /></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="about" id="about" aria-labelledby="about-heading">
+        <div class="container about-layout"><div class="about-image"><img src="/media/booth-800.webp" width="640" height="798" loading="lazy" alt={copy.about.imageAlt} /><span class="image-caption">{copy.about.imageCaption}</span></div><div class="about-copy"><p class="eyebrow"><span class="small-dash"></span> {copy.about.eyebrow}</p><h2 id="about-heading">{copy.about.headingLead}<br />{copy.about.headingLink} <em>{copy.about.headingAccent}</em></h2><p>{copy.about.description}</p><div class="about-signature"><img src="/media/elite-symbol.png" alt="" width="328" height="216" loading="lazy" /><span class="latin" lang="en" dir="ltr">SAME SPIRIT.<br />A WIDER FRAME.</span></div></div></div>
+      </section>
+
+      <section class="process container section-space" id="process" aria-labelledby="process-heading">
+        <div class="section-heading-row"><div><p class="eyebrow"><span class="small-dash"></span> {copy.process.eyebrow}</p><h2 id="process-heading">{copy.process.headingLead}<br /><em>{copy.process.headingAccent}</em></h2></div><p>{copy.process.descriptionLines.map((line,i) => <>{i > 0 && <br />}{line}</>)}</p></div>
+        <ol class="process-grid">{processSteps.map(step => <li><span class="step-number latin" dir="ltr">{step.number}</span><span class="step-dot"></span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
+      </section>
+
+      <section class="contact" id="contact" aria-labelledby="contact-heading">
+        <div class="container contact-panel">
+          <div class="contact-copy"><p class="eyebrow"><span class="small-dash"></span> {copy.contact.eyebrow}</p><h2 id="contact-heading">{copy.contact.heading}</h2><p>{copy.contact.description}</p><button class="button button-light" type="button" data-brief-open>{copy.contact.projectLink} <Icon /></button></div>
+          <div class="contact-direct"><a href="mailto:info@eliteproksa.com"><span>{copy.contact.emailLabel}</span><strong class="latin" dir="ltr">info@eliteproksa.com</strong><Icon name="external" /></a><a href="https://wa.me/966570327877" target="_blank" rel="noopener noreferrer"><span>{copy.contact.whatsappLabel}</span><strong class="latin" dir="ltr">+966 57 032 7877</strong><Icon name="external" /></a><p>{copy.contact.location}</p></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="footer">
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-identity">
+            <a class="footer-brand" href="#top" aria-label={copy.page.brandHomeLabel}><img src="/media/elite-logo.png" width="328" height="362" alt={copy.page.brandImageAlt} loading="lazy" /></a>
+            <div class="footer-statement"><p>{copy.footer.statementLines.map((line,i) => <>{i > 0 && <br />}{line}</>)}</p><span class="latin" lang="en" dir="ltr">ESTABLISH TO END.</span></div>
+          </div>
+          <nav class="footer-navigation" aria-label={copy.footer.navigationAriaLabel}>
+            <p class="footer-label">{copy.footer.navigationLabel}</p>
+            <div class="footer-nav-links"><a href="#services">{copy.nav.services}</a><a href="#work">{copy.nav.work}</a><a href="#about">{copy.nav.about}</a><a href="#process">{copy.nav.process}</a><a href="#contact">{copy.nav.contact}</a></div>
+          </nav>
+          <div class="footer-social">
+            <p class="footer-label" id="footer-social-heading">{copy.footer.socialLabel}</p>
+            <ul class="social-links" aria-labelledby="footer-social-heading">
+              <li><a href="https://www.instagram.com/elitepro.sa/" target="_blank" rel="noopener noreferrer" aria-label={copy.footer.socialAriaLabels.instagram}><SocialIcon name="instagram" /><span class="social-tooltip latin" aria-hidden="true" lang="en" dir="ltr">Instagram</span></a></li>
+              <li><a href="https://www.linkedin.com/company/elite-production-company/" target="_blank" rel="noopener noreferrer" aria-label={copy.footer.socialAriaLabels.linkedin}><SocialIcon name="linkedin" /><span class="social-tooltip latin" aria-hidden="true" lang="en" dir="ltr">LinkedIn</span></a></li>
+              <li><a href="https://vimeo.com/eliteprosa" target="_blank" rel="noopener noreferrer" aria-label={copy.footer.socialAriaLabels.vimeo}><SocialIcon name="vimeo" /><span class="social-tooltip latin" aria-hidden="true" lang="en" dir="ltr">Vimeo</span></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom"><span>© {new Date().getFullYear()} {copy.footer.copyright}</span><span class="footer-location">{copy.footer.location}</span></div>
+      </div>
+    </footer>
+
+    <dialog class="mobile-menu" id="mobile-menu" aria-labelledby="menu-heading"><div class="menu-top"><h2 id="menu-heading">{copy.menu.heading}</h2><button class="icon-button" type="button" data-dialog-close aria-label={copy.menu.close}><Icon name="close" /></button></div><nav aria-label={copy.menu.ariaLabel}><a href="#services">{copy.nav.services} <Icon /></a><a href="#work">{copy.nav.work} <Icon /></a><a href="#about">{copy.nav.about} <Icon /></a><a href="#process">{copy.nav.process} <Icon /></a><a href="#contact">{copy.nav.contact} <Icon /></a></nav><button class="button button-light" type="button" data-brief-open>{copy.nav.startProject} <Icon /></button></dialog>
+
+    <dialog class="film-dialog" id="film-dialog" aria-labelledby="film-title"><div class="film-dialog-head"><div><p id="film-subtitle" class="category"></p><h2 id="film-title"></h2></div><button type="button" class="icon-button" data-dialog-close aria-label={copy.film.close}><Icon name="close" /></button></div><video id="film-player" controls playsinline preload="none"></video><p class="film-description" id="film-description"></p></dialog>
+
+    <dialog class="brief-dialog" id="brief-dialog" aria-labelledby="brief-title" aria-describedby="brief-intro">
+      <div class="brief-header"><span class="eyebrow">{copy.form.eyebrow}</span><button type="button" class="icon-button" data-dialog-close aria-label={copy.form.close}><Icon name="close" /></button></div>
+      <h2 id="brief-title">{copy.form.title}</h2><p class="brief-intro" id="brief-intro">{copy.form.intro}</p>
+      <form id="brief-form" action="mailto:info@eliteproksa.com" method="get" novalidate>
+        <div class="brief-fields">
+          <label for="enquiry-name">{copy.form.fields.name.label} <span class="field-required">{copy.form.required}</span><input id="enquiry-name" name="name" autocomplete="name" required minlength="2" maxlength="80" placeholder={copy.form.fields.name.placeholder} /></label>
+          <label for="enquiry-company">{copy.form.fields.company.label} <span class="field-optional">{copy.form.optional}</span><input id="enquiry-company" name="company" autocomplete="organization" maxlength="120" placeholder={copy.form.fields.company.placeholder} /></label>
+          <label for="enquiry-email">{copy.form.fields.email.label} <span class="field-optional">{copy.form.optional}</span><input id="enquiry-email" name="email" type="email" autocomplete="email" inputmode="email" dir="ltr" maxlength="120" placeholder="name@example.com" /></label>
+          <label for="enquiry-phone">{copy.form.fields.phone.label} <span class="field-optional">{copy.form.optional}</span><input id="enquiry-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" maxlength="30" placeholder="+966" /></label>
+        </div>
+        <fieldset><legend>{copy.form.servicesLabel} <span class="field-optional">{copy.form.servicesHelp}</span></legend><div class="brief-options">{services.map(service => <label><input type="checkbox" name="service" value={service.id} /><span>{service.title}</span></label>)}<label><input type="checkbox" name="service" value="unsure" /><span>{copy.form.unsure}</span></label></div></fieldset>
+        <label class="brief-message" for="project-note">{copy.form.fields.message.label} <span class="field-required">{copy.form.required}</span><span>{copy.form.messageHelp}</span></label><textarea id="project-note" name="message" rows="3" required minlength="10" maxlength="1000" placeholder={copy.form.fields.message.placeholder}></textarea>
+        <button class="button button-light brief-submit" type="submit"><span>{copy.form.submit}</span><Icon name="mail" /></button>
+        <p class="brief-send-note">{copy.form.sendNote}</p>
+        <p id="brief-status" class="brief-status" role="status" aria-live="polite"></p><a id="prepared-email" class="text-link prepared-email" href="mailto:info@eliteproksa.com" hidden>{copy.form.openPreparedEmail} <Icon name="external" /></a>
+        <div class="brief-direct"><span>{copy.form.directEmailLabel}</span><a href="mailto:info@eliteproksa.com" class="latin" dir="ltr">info@eliteproksa.com <Icon name="external" /></a></div>
+      </form>
+    </dialog>
+
+    <script define:vars={{ filmData: localizedFilms, serviceNames: Object.fromEntries(services.map(s => [s.id, s.title])), language: locale, ui: {form: copy.form, validation: copy.validation, hero: copy.hero, mail: copy.mail} }}>
+      window.eliteContent = {films: filmData, serviceNames, language, ui};
+    </script>
+    <script>import '../lib/home-client';</script>
+  </body>
+</html>

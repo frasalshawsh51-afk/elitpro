@@ -1,0 +1,18 @@
+/* A single exposure inside the photograph. Copy, controls and the page remain still. */
+[data-production-image]{position:relative;overflow:hidden;isolation:isolate}
+.production-aperture{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;contain:paint}
+.production-aperture::before,.production-aperture::after{content:"";position:absolute;inset-inline:0;pointer-events:none;will-change:transform}
+.production-aperture::before{top:0;height:43%;background:linear-gradient(180deg,#06191dd1,#06191d85);border-bottom:1px solid #b9d0c82b;transform:translateY(-102%)}
+.production-aperture::after{bottom:0;height:43%;background:linear-gradient(0deg,#06191dd1,#06191d85);border-top:1px solid #b9d0c82b;transform:translateY(102%)}
+[data-production-ready="true"][data-production-state="waiting"] .production-aperture::before,
+[data-production-ready="true"][data-production-state="waiting"] .production-aperture::after{transform:translateY(0)}
+[data-production-state="exposing"] .production-aperture{animation:production-release 0ms 420ms forwards}
+[data-production-state="exposing"] .production-aperture::before{animation:production-open-top 380ms cubic-bezier(.2,.7,.2,1) both}
+[data-production-state="exposing"] .production-aperture::after{animation:production-open-bottom 380ms cubic-bezier(.2,.7,.2,1) both}
+[data-production-window]:focus-within .production-aperture{display:none}
+[data-production-window][data-production-ready]:hover [data-production-image] img{transform:none}
+@keyframes production-open-top{from{transform:translateY(0)}to{transform:translateY(-102%)}}
+@keyframes production-open-bottom{from{transform:translateY(0)}to{transform:translateY(102%)}}
+@keyframes production-release{to{visibility:hidden}}
+@media(prefers-reduced-motion:reduce){.production-aperture{display:none!important}[data-production-image] img{transition:none!important}}
+@media(forced-colors:active){.production-aperture{display:none!important}}
